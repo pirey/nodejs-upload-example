@@ -14,8 +14,12 @@ router.get('/profile', function (req, res, next) {
 })
 
 router.post('/profile', upload.single('avatar'), function (req, res, next) {
-  fs.rename(req.file.path, req.file.path + req.file.originalname)
-  res.send(req.file)
+  fs.rename(req.file.path, req.file.path + req.file.originalname, function (err) {
+    if (err) {
+      return res.json({ status: 'FAILED', data: err })
+    }
+    return res.json({ status: 'OK', data: req.file })
+  })
 })
 
 module.exports = router
