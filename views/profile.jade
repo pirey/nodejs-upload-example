@@ -1,0 +1,10 @@
+extends layout
+
+block content
+  form(action='/profile' method='post' enctype='multipart/form-data')
+    p
+      input(name='name')
+    p
+      input(type='file' name='avatar')
+    p
+      input(type='submit')
