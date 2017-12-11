@@ -10,6 +10,6 @@ block content
       p
         input(v-model='message' name='message')
       p
-        input(type='file' name='avatar')
+        input(type='file' @change='handleAttachment($event)' name='avatar')
       p
         input(type='submit')

@@ -1,4 +1,4 @@
-// var axios = window.axios
+var axios = window.axios
 var io = window.io
 var Vue = window.Vue
 
@@ -13,6 +13,26 @@ var app = new Vue({ // eslint-disable-line
     messages: []
   },
   methods: {
+    handleAttachment: function (e) {
+      var vm = this
+      var files = e.target.files || e.dataTransfer.files
+      if (!files.length) return
+
+      var data = new window.FormData()
+      data.append('attachment', files[0])
+
+      request('/attachment', data)
+        .then(res => {
+          if (res.status !== 'OK') {
+            window.alert('something went wrong')
+          }
+          vm.socket.emit('message', res.data.path + res.data.originalname, function () {
+            vm.messages = vm.messages.concat(res.data.path + res.data.originalname)
+            e.target.value = ''
+            vm.message = ''
+          })
+        })
+    },
     registerSocketHandlers: function () {
       var vm = this
       var socket = vm.socket
@@ -32,13 +52,13 @@ var app = new Vue({ // eslint-disable-line
   }
 })
 
-/* function request (url, data) {
+function request (url, data) {
   return axios({
     method: 'post',
     url: url,
     headers: {
-      'Content-Type': 'multipart/form-data'
+      'Content-Type': 'multipart/form-data; boundary=xxx'
     },
     data: data
-  })
-} */
+  }).then(res => res.data)
+}
