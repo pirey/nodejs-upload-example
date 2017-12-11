@@ -1,13 +1,14 @@
 extends layout
 
 block content
-  form(id='profile' action='/profile' method='post' enctype='multipart/form-data')
-    p
-      input(name='name')
-    p
-      input(type='file' name='avatar')
-    p
-      input(type='submit')
+  div(id='app')
 
-  script(src='https://unpkg.com/axios/dist/axios.min.js')
-  script(src='/javascripts/main.js')
+    p {{ msg }}
+
+    form(id='profile' @submit.prevent='submitForm($event)' action='/profile' method='post' enctype='multipart/form-data')
+      p
+        input(name='name')
+      p
+        input(type='file' name='avatar')
+      p
+        input(type='submit')
