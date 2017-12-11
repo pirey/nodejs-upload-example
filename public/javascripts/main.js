@@ -1,24 +1,38 @@
-var { axios, FormData, io, Vue } = window
+// var axios = window.axios
+var io = window.io
+var Vue = window.Vue
 
 var app = new Vue({ // eslint-disable-line
   el: '#app',
   mounted: function () {
     this.socket = io()
+    this.registerSocketHandlers()
   },
   data: {
+    message: '',
+    messages: []
   },
   methods: {
+    registerSocketHandlers: function () {
+      var vm = this
+      var socket = vm.socket
+      socket.on('message', function (msg) {
+        vm.messages = vm.messages.concat(msg)
+      })
+    },
     submitForm: function (e) {
-      console.log(e)
       e.preventDefault()
-      var form = e.target
-      request('/profile', new FormData(form))
-        .then(res => form.reset())
+
+      var vm = this
+      vm.socket.emit('message', vm.message, function () {
+        vm.messages = vm.messages.concat(vm.message)
+        vm.message = ''
+      })
     }
   }
 })
 
-function request (url, data) {
+/* function request (url, data) {
   return axios({
     method: 'post',
     url: url,
@@ -27,4 +41,4 @@ function request (url, data) {
     },
     data: data
   })
-}
+} */

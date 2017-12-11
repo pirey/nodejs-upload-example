@@ -9,11 +9,11 @@ router.get('/', function (req, res, next) {
   res.render('index', { title: 'Express' })
 })
 
-router.get('/profile', function (req, res, next) {
-  res.render('profile')
+router.get('/chat', function (req, res, next) {
+  res.render('chat')
 })
 
-router.post('/profile', upload.single('avatar'), function (req, res, next) {
+router.post('/attachment', upload.single('attachment'), function (req, res, next) {
   fs.rename(req.file.path, req.file.path + req.file.originalname, function (err) {
     if (err) {
       return res.json({ status: 'FAILED', data: err })

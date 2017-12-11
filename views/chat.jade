@@ -3,11 +3,12 @@ extends layout
 block content
   div(id='app')
 
-    p {{ msg }}
+    div(id='messages')
+      p(v-for='item in messages') {{ item }}
 
     form(id='profile' @submit.prevent='submitForm($event)' action='/profile' method='post' enctype='multipart/form-data')
       p
-        input(name='name')
+        input(v-model='message' name='message')
       p
         input(type='file' name='avatar')
       p
